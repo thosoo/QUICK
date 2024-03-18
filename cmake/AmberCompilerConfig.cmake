@@ -2,7 +2,7 @@
 
 # Handle the COMPILER option
 # --------------------------------------------------------------------
-set(ALL_COMPILER_VALUES GNU INTEL PGI CRAY CLANG MSVC AUTO MANUAL)
+set(ALL_COMPILER_VALUES GNU INTEL PGI CRAY CLANG MSVC NVHPC AUTO MANUAL)
 
 # help message displayed when COMPILER is unset or invalid
 set(COMPILER_HELP "
@@ -13,6 +13,7 @@ set(COMPILER_HELP "
       GNU        |     gcc      |      g++       |     gfortran       | 4.8.5+
       INTEL      |     icc      |      icpc      |     ifort          | 19
       PGI        |     pgcc     |      pgc++     |     pgf90          | 
+      NVHPC      |     nvcc     |      nvc++     |     nvfortran      |
       CLANG      |     clang    |      clang++   |     gfortran       | 
       CRAY       |     cc       |      CC        |     ftn            | 
   --------------------------------------------------------------------------------------
@@ -139,6 +140,10 @@ if(FIRST_RUN)
 		set_compiler(C icc)
 		set_compiler(CXX icpc)
 		set_compiler(Fortran ifort)
+	elseif(${COMPILER} STREQUAL NVHPC)
+		set_compiler(C nvcc)
+		set_compiler(CXX nvc++)
+		set_compiler(Fortran nvfortran)
 	elseif(${COMPILER} STREQUAL PGI)
 		set_compiler(C pgcc)
 		set_compiler(CXX pgc++)
