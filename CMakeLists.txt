@@ -174,7 +174,68 @@ if("${CMAKE_Fortran_COMPILER_ID}" STREQUAL "Intel")
 endif()
 
 
+# NVHPC Compiler Configuration
+# --------------------------------------------------------------------
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "NVHPC")
 
+    set(OPT_CFLAGS -O2 -fast -Minfo=opt)
+
+    if (WARNINGS)
+        add_flags(C -Minform=warn -Mneginfo -Mnoopenmp)
+    
+        if(NOT UNUSED_WARNINGS)
+            add_flags(C -Munused)
+        endif()
+    
+        if(NOT UNINITIALIZED_WARNINGS)
+            # NVHPC might not have a direct equivalent for uninitialized warnings, adjust as needed.
+        endif()
+    endif()
+    
+endif()
+
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "NVHPC")
+    
+    set(OPT_CXXFLAGS -O2 -fast -Minfo=opt)
+
+    if (WARNINGS)
+        add_flags(CXX -Minform=warn -Mneginfo -Mnoopenmp)
+    
+        if(NOT UNUSED_WARNINGS)
+            add_flags(CXX -Munused)
+        endif()
+    
+        if(NOT UNINITIALIZED_WARNINGS)
+            # Adjust based on NVHPC capabilities and your needs.
+        endif()
+    endif()
+
+endif()
+
+if("${CMAKE_Fortran_COMPILER_ID}" STREQUAL "NVHPC")
+
+    set(OPT_FFLAGS -O2 -fast -Minfo=opt)
+
+    add_flags(Fortran -Mfree)
+
+    if (WARNINGS)
+        add_flags(Fortran -Minform=warn -Mneginfo -Mnoopenmp -Mfree)
+    
+        if(NOT UNUSED_WARNINGS)
+            add_flags(Fortran -Munused)
+        endif()
+        
+        if(NOT UNINITIALIZED_WARNINGS)
+            # Adjust as needed for Fortran.
+        endif()  
+    endif()
+
+    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Mpreprocess")
+
+    # Add any NVHPC-specific definitions or compiler flags that are required.
+    add_definitions(-DNVHPC)
+
+endif()
 
 # PGI, CRAY, CLANG: NOT SUPPORTED
 # --------------------------------------------------------------------
